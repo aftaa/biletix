@@ -1,0 +1,13 @@
+.flight-direction {
+    color: #2aabd2;
+    font-size: 18pt;
+    text-align: center;
+}
+
+tbody.flight {
+    display: none;
+}
+
+tbody.flight:first-child {
+    display: table-row-group;
+}

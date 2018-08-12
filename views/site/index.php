@@ -1,52 +1,68 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $error string */
+/* @var $flights app\models\Flight[] */
+/* @var $form \app\models\MockForm */
 
-$this->title = 'My Yii Application';
+$this->title = '';
+$this->registerCssFile('@web/css/biletix.css');
+$this->registerJsFile('@web/js/biletix.js', [
+    'depends'  => \yii\web\JqueryAsset::class,
+    'position' => \yii\web\View::POS_END,
+]);
 ?>
 <div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
     <div class="body-content">
-
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+            <h1 style="float: right;">
+                <?= $form->outbound_date ?>
+            </h1>
+            <h1>
+                <?= $form->ak ?> &nbsp; <?= $form->departure_point ?> &#8644; <?= $form->arrival_point ?>
+            </h1>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <?php if ($error): ?>
+                <div class="error">
+                    <h3>Возникла ошибка:</h3>
+                    <?= $error ?>
+                </div>
+            <?php else: ?>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <?php if (count($flights)): ?>
+                    <table class="table" cellspacing="10">
+                        <?php if ($flights) foreach ($flights as $i => $flight): ?>
+                            <tbody class="flight">
+                            <tr>
+                                <td colspan="9" class="bg-info text-center">
+                                    <h2><?= $flight->getPrice() ?></h2>
+                                </td>
+                            </tr>
+                            <?= $this->render('_tickets', ['tickets' => $flight->getTicketsTo()]) ?>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="flight-direction">
+                                        Обратно:
+                                    </div>
+                                </td>
+                            </tr>
+                            <?= $this->render('_tickets', ['tickets' => $flight->getTicketsBack()]) ?>
+                            </tbody>
+                        <?php endforeach ?>
+                    </table>
+                    <?php if (count($flights) > 1): ?>
+                        <div class="text-center">
+                            <br>
+                            <input type="button" class="btn btn-info btn-lg" value="Смотреть другие варианты" id="display-more">
+                        </div>
+                    <?php endif ?>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+                <?php else: ?>
+                    <p>Рейсов не найдено</p>
+                <?php endif ?>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+            <?php endif ?>
         </div>
 
     </div>
