@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $error string */
-/* @var $flights app\models\Flight[] */
+/* @var $flights app\models\RTFlight[] */
 /* @var $form \app\models\MockForm */
 
 $this->title = '';

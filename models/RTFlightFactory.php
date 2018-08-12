@@ -9,18 +9,20 @@
 namespace app\models;
 
 
-class FlightFactory
+class RTFlightFactory
 {
     /**
-     * @param object   $offer
-     * @param Currency $currency
+     * @param object           $offer
+     * @param Currency         $currency
+     * @param string           $ak
+     * @param RTFlightStrategy $flightStrategy
      *
-     * @return Flight
+     * @return RTFlight
      */
-    public static function createFromWsdlStorageOffer(object $offer, Currency $currency): Flight
+    public static function createFromWsdlStorageOffer(object $offer, Currency $currency, string $ak, RTFlightStrategy $flightStrategy): RTFlight
     {
         $price = new Cost($offer->products->Product->price, $currency);
-        $flight = new Flight($price);
+        $flight = new RTFlight($price, $ak, $flightStrategy);
 
         foreach ($offer->directions->GetOptimalFaresDirection as $direction) {
 
@@ -34,6 +36,7 @@ class FlightFactory
                 }
             }
         }
+
         return $flight;
     }
 

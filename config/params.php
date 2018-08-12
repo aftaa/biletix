@@ -10,5 +10,7 @@ return [
             'hash' => '[partner]||SOAPTEST',
             'disable_hash' => 'Y',
         ],
+        // Обратный полет должен быть выполен той же авиакомпанией
+        'backTheSameCompany' => true,
     ],
 ];

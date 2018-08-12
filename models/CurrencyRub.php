@@ -11,6 +11,9 @@ namespace app\models;
 
 class CurrencyRub extends Currency
 {
+    /**
+     * @return string
+     */
     public function getSign(): string
     {
         return '₽';

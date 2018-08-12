@@ -32,14 +32,8 @@ class SiteController extends Controller
         try {
             $config = Yii::$app->params['biletix'];
             $form = new MockForm;
-
-            $cacheDuration = YII_DEBUG ? 300 : null;
-
-            $flights = Yii::$app->cache->getOrSet('tickets', function () use ($config, $form) {
-                $storage = new WsdlStorage($config);
-                $flights = $storage->getOptimalFares($form->toArray());
-                return $flights;
-            }, $cacheDuration);
+            $storage = new WsdlStorage($config);
+            $flights = $storage->getOptimalFares($form->toArray());
 
             return $this->render('index', [
                 'flights' => $flights,

@@ -14,9 +14,6 @@ class Ticket
     /** @var string Номер рейса */
     private $flightNumber;
 
-    /** @var Cost Стоимость */
-    private $price;
-
     /** @var string продолжительность перелета ЧЧ:ММ */
     private $duration;
 
@@ -65,22 +62,6 @@ class Ticket
     public function setFlightNumber(string $flightNumber): void
     {
         $this->flightNumber = $flightNumber;
-    }
-
-    /**
-     * @return Cost
-     */
-    public function getPrice(): Cost
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param Cost $price
-     */
-    public function setPrice(Cost $price): void
-    {
-        $this->price = $price;
     }
 
     /**

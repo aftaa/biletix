@@ -26,13 +26,13 @@ class TicketFactory
         $class = self::WSDL_DIRECTIONS[$direction];
         /** @var Ticket $ticket */
         $ticket = new $class;
+        $ticket->setAk($segment->ak);
+        $ticket->setFlightNumber($segment->flight_number);
         $ticket->setDepartureFrom($segment->departure_airport_code);
         $ticket->setDepartureAt(new \DateTime($segment->departure_utc));
         $ticket->setArrivalTo($segment->arrival_airport_code);
         $ticket->setArrivalAt(new \DateTime($segment->arrival_utc));
         $ticket->setDuration($segment->duration);
-        $ticket->setAk($segment->ak);
-        $ticket->setFlightNumber($segment->flight_number);
         return $ticket;
     }
 }

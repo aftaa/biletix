@@ -29,7 +29,9 @@ class WsdlStorage
 
     /**
      * WsdlStorage constructor.
+     *
      * @param array $config
+     *
      * @throws WsdlStorageException
      */
     public function __construct(array $config)
@@ -58,23 +60,24 @@ class WsdlStorage
     }
 
     /**
-     * @param array $params
-     * @return Flight[]
+     * @param array $form
+     *
+     * @return RTFlight[]
      * @throws WsdlStorageException
      */
-    public function getOptimalFares(array $params): array
+    public function getOptimalFares(array $form): array
     {
-        $params['session_token'] = $this->sessionToken;
-        $params['hash'] = $this->config['hash'];
+        $form['session_token'] = $this->sessionToken;
+        $form['hash'] = $this->config['hash'];
 
         try {
-            $optimalFares = $this->client->GetOptimalFares($params);
+            $optimalFares = $this->client->GetOptimalFares($form);
 
             if ('OK' != $optimalFares->error->code) {
                 throw new WsdlStorageException($optimalFares->error->code);
             }
 
-            $flights = $this->parseOptimalFaresIntoFlights($optimalFares, $params['ak']);
+            $flights = $this->parseOptimalFaresIntoFlights($optimalFares, $form['ak']);
             return $flights;
 
         } catch (SoapFault $e) {
@@ -85,19 +88,24 @@ class WsdlStorage
     /**
      * @param object $result
      * @param string $ak
-     * @return Flight[]
+     *
+     * @return RTFlight[]
      * @throws \Exception
      */
     public function parseOptimalFaresIntoFlights(object $result, string $ak): array
     {
         $currency = Currency::currencyFactory($result->currency);
-        /** @var Flight[] $flights */
+        $flightStrategy = RTFlightStrategyFactory::create($this->config['backTheSameCompany']);
+
+        /** @var RTFlight[] $flights */
         $flights = [];
         if (!empty($result->offers->GetOptimalFaresOffer)) {
             foreach ($result->offers->GetOptimalFaresOffer as $offer) {
                 if ($offer->ak == $ak) {
-                    $flight = FlightFactory::createFromWsdlStorageOffer($offer, $currency);
-                    $flights[] = $flight;
+                    $flight = RTFlightFactory::createFromWsdlStorageOffer($offer, $currency, $ak, $flightStrategy);
+                    if ($flight->hasTickets()) {
+                        $flights[] = $flight;
+                    }
                 }
             }
         }
