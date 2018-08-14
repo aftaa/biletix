@@ -17,7 +17,7 @@ class RTFlightStrategyFactory
      * @return RTFlightStrategy
      * @throws \Exception
      */
-    public function create(bool $backTheSameCompany): RTFlightStrategy
+    public static function create(bool $backTheSameCompany): RTFlightStrategy
     {
         switch ($backTheSameCompany) {
             case true:

@@ -23,7 +23,7 @@ $this->registerJsFile('@web/js/biletix.js', [
                 <?= $form->ak ?> &nbsp; <?= $form->departure_point ?> &#8644; <?= $form->arrival_point ?>
             </h1>
 
-            <?php if ($error): ?>
+            <?php if (!empty($error)): ?>
                 <div class="error">
                     <h3>Возникла ошибка:</h3>
                     <?= $error ?>

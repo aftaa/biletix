@@ -68,7 +68,7 @@ class WsdlStorage
     public function getOptimalFares(array $form): array
     {
         $form['session_token'] = $this->sessionToken;
-        $form['hash'] = $this->config['hash'];
+        $form['hash'] = $this->config['auth']['hash'];
 
         try {
             $optimalFares = $this->client->GetOptimalFares($form);
